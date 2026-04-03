@@ -1,0 +1,10 @@
+[project]
+name = "mouse-xy"
+version = "0.1.0"
+description = "实时显示鼠标屏幕坐标的轻量小工具"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "keyboard>=0.13.5",
+    "pyautogui>=0.9.54",
+]
