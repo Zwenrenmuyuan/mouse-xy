@@ -1,0 +1,41 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: 安装依赖
+        run: uv sync
+
+      - name: 安装 PyInstaller
+        run: uv add --dev pyinstaller
+
+      - name: 构建 .exe
+        run: uv run pyinstaller --onefile --windowed --name mouse-xy main.py
+
+      - name: 发布 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/mouse-xy.exe
+          name: ${{ github.ref_name }}
+          body: |
+            ## mouse-xy ${{ github.ref_name }}
+
+            鼠标坐标实时显示工具
+
+            ### 使用方式
+            直接运行 `mouse-xy.exe`，按 **Ctrl+Alt+C** 复制当前坐标。
+
+            > 注意：可能需要以管理员身份运行（keyboard 库要求）
